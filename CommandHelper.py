@@ -33,7 +33,7 @@ async def submit_vote(ctx, message):
 
     for poll in ongoing_polls:
         if message in ongoing_polls[poll].cat_dict.keys():
-            if ctx.author.id in ongoing_polls:
+            if ongoing_polls[poll].did_vote(ctx.author.id):
                 await ctx.send(f"{ctx.author}, you have alread voted in {poll}")
                 return
 
@@ -60,10 +60,29 @@ async def show_pie_plt(ctx, poll):
     if poll in ongoing_polls.keys():
         print('poll exists')
         ongoing_polls[poll].pie_votes()
-    await ctx.send(file=discord.File('poll.png'))
+        await ctx.send(file=discord.File('poll.png'))
+        await purge_poll(poll)
+    else:
+        await ctx.send(f"{poll} does not exist")
 
-async def purge_poll(ctx, poll):
-    pass
+
+async def purge_poll(poll):
+    try:
+        del ongoing_polls[poll]
+    except KeyError:
+        print(f"[INFO] Error deleting {poll} from ongoing polls")
+
+
+async def show_ongoing_polls(ctx):
+    if ongoing_polls:
+        await ctx.send("Ongoing polls: ")
+        ongoing_list = [poll for poll in ongoing_polls]
+        ongoing = '\n'.join(ongoing_list)
+        await ctx.send(f"{ongoing}")
+
+    else:
+        await ctx.send(f"{ctx.author}, there are no ongoing polls")
+
 
 async def save_poll(ctx):
     pass

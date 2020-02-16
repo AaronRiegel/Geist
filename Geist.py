@@ -3,7 +3,7 @@ from discord.ext import commands
 import CommandHelper
 import random
 
-description = '''the ghost bot who will helpfully haunt my discord'''
+description = '''Geist: the ghost bot who will helpfully haunt my discord'''
 bot = commands.Bot(command_prefix='!', description=description)
 polls = []
 
@@ -68,6 +68,15 @@ async def vote(ctx, user_input):
     """
     await CommandHelper.submit_vote(ctx, user_input)
 
+
+@bot.command()
+async def lst(ctx):
+    """
+    !lst shows all current ongoing polls
+    :param ctx:
+    :return:
+    """
+    await CommandHelper.show_ongoing_polls(ctx)
 
 @bot.group()
 async def cool(ctx):

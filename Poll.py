@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 class Poll:
     """
-
+    Poll Object, contains information about poll and helper methods.
     """
 
     def __init__(self, lst, title, active=True):
@@ -45,8 +45,9 @@ class Poll:
         return self.active
 
     def pie_votes(self):
-        print('[INFO] making pie chart')
+        print(f'[INFO] making pie chart: {self.title}')
         labels = self.cat_dict.keys()
         values = self.cat_dict.values()
+        plt.title = self.title
         plt.pie(values, labels=labels)
         plt.savefig('poll.png')

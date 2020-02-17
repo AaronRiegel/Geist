@@ -22,6 +22,7 @@ async def add(ctx, left: int, right: int):
 
 @bot.command()
 async def hello(ctx):
+    """Bot will return a greeting."""
     greeting = random.choice(greetings)
 
     if type(greeting) is tuple:
@@ -38,35 +39,37 @@ async def choose(ctx, *choices: str):
 
 @bot.command()
 async def poll(ctx):
-    """Use a poll
+    """Create a poll.
     !poll <title>:<categories>,<separated>,<by>,<commas>
     """
     if ':' in ctx.message.content:
         new_poll_title = await CommandHelper.create_poll(ctx, ctx.message.content)
         await ctx.send(f"Created {new_poll_title}")
-        # print(ctx.message.content)
     else:
         await ctx.send('no')
 
+
 @bot.command()
-async def endpoll(ctx, message):
+async def endpoll(ctx):
     """
-    End a poll
+    End a poll.
     !endpoll <title>
     :return:
     """
+    message = await CommandHelper.get_message(ctx.message.content, '!endpoll')
+    print(f'{message}')
     await CommandHelper.show_pie_plt(ctx, message)
 
 
 @bot.command()
-async def vote(ctx, user_input):
+async def vote(ctx):
     """
     !vote <category> to vote
     :param ctx:
-    :param user_input:
     :return:
     """
-    await CommandHelper.submit_vote(ctx, user_input)
+    message = await CommandHelper.get_message(ctx.message.content, '!vote')
+    await CommandHelper.submit_vote(ctx, message)
 
 
 @bot.command()
@@ -78,13 +81,14 @@ async def lst(ctx):
     """
     await CommandHelper.show_ongoing_polls(ctx)
 
+
 @bot.group()
 async def cool(ctx):
     """Says if a user is cool.
     In reality this just checks if a subcommand is being invoked.
     """
     if ctx.invoked_subcommand is None:
-        await ctx.send('No, {0.subcommand_passed} is not cool'.format(ctx))
+        await ctx.send(f'No, {ctx.invoked_subcommand} is not cool')
 
 
 @cool.command(name='bot')
@@ -114,6 +118,9 @@ async def roll(ctx, dice: str):
 
 @bot.command()
 async def shutdown(ctx):
+    """
+    Only possible by guild owner
+    """
     if ctx.author.id is not ctx.guild.owner.id:
         await ctx.send(f'YOU ARE NOT AUTHORIZED {ctx.author}, THE {bot.user.name} TRAIN KEEPS GOING!')
     else:
@@ -125,6 +132,9 @@ async def shutdown(ctx):
 
 @bot.command()
 async def nuke(ctx):
+    """
+    Under construction
+    """
     if ctx.author.id is not ctx.guild.owner.id:
         await ctx.send(f'no u')
     else:

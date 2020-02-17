@@ -5,13 +5,8 @@ import re
 ongoing_polls = {}
 
 
-async def get_message(message, cmd):
-    print(re.search("(\\s[A-Za-z0-9]*)"))
-    print("1")
-    print(message.lstrip(cmd+' '))
-    print("2")
-    print(message.lstrip(cmd))
-    return message.lstrip(cmd + ' ')
+async def get_message(message):
+    return re.search("\\s(.*)", message).group().lstrip()
 
 
 async def create_poll(ctx, message):

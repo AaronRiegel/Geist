@@ -56,7 +56,7 @@ async def endpoll(ctx):
     !endpoll <title>
     :return:
     """
-    message = await CommandHelper.get_message(ctx.message.content, '!endpoll')
+    message = await CommandHelper.get_message(ctx.message.content)
     print(f'{message}')
     await CommandHelper.show_pie_plt(ctx, message)
 
@@ -68,7 +68,7 @@ async def vote(ctx):
     :param ctx:
     :return:
     """
-    message = await CommandHelper.get_message(ctx.message.content, '!vote')
+    message = await CommandHelper.get_message(ctx.message.content)
     await CommandHelper.submit_vote(ctx, message)
 
 
